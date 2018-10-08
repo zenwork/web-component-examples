@@ -5,22 +5,41 @@
     <title>Simple Web Component</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.0.2/webcomponents-bundle.js"></script>
     <script>
-        customElements.define('wc-simple',
+        let getElement = function (root, classNames) {
+            return root.getElementsByClassName(classNames)[0];
+        };
+        customElements.define('rps-simple',
                               class extends HTMLElement {
 
-                                  static get observedAttributes() { return ['label']; }
+                                  static get observedAttributes() { return ['player-1']; }
 
                                   connectedCallback() {
                                       console.log('connected');
                                   }
 
+                                  init() {
+                                      this.game = {
+                                          player1:{name:'you', choice:'none'},
+                                          player2:{name:'computer', choice:'none'},
+                                          score:{wins:0, losses:0, ties:0, outOf:0}
+                                      };
+
+                                      this._rock = 'rock';
+                                      this._paper = 'paper';
+                                      this._scissor = 'scissor';
+                                  }
+
                                   attributeChangedCallback(name, oldValue, newValue) {
+                                      console.log('handled');
                                       if (oldValue !== newValue) {
                                           switch (name) {
-                                              case 'label':
-                                                  console.log('label changed');
-                                                  this.label = newValue;
-                                                  this.p.textContent = this.label;
+                                              case 'player-1':
+                                                  console.log('changed');
+                                                  this.game.player1.name = newValue;
+                                                  this.root
+                                                      .getElementsByClassName('player-1')[0]
+                                                      .getElementsByClassName('name')[0]
+                                                      .innerHTML = newValue;
                                                   break;
                                               default:
 
@@ -30,19 +49,155 @@
 
                                   constructor() {
                                       super();
+                                      console.log('constructing');
+                                      this.init();
+                                      const that = this;
+                                      const game = this.game;
 
-                                      this.p = document.createElement('p');
-                                      this.p.textContent = this.label;
+                                      this.root = document.createElement('root');
+                                      let root = this.root;
+
+                                      root.innerHTML = `
+                                      <section class="player-1">
+                                        <h2 class="name">name</h2>
+                                        <div class="options">
+                                            <h3>Options</h3>
+                                            <button class="rock">Rock</button>
+                                            <button class="paper">Paper</button>
+                                            <button class="scissor">Scissor</button>
+                                        </div>
+                                        <div class="selection">
+                                            <h3>Selection</h3>
+                                           <span class="selected-label">nothing selected</span>
+                                        </div>
+                                      </section>
+                                      <section class="player-2">
+                                        <h2 class="name">${this.game.player2.name}</h2>
+                                        <div class="options">
+                                            <h3>Options</h3>
+                                            <span>Computer will reveal choice after you select</span>
+                                        </div>
+                                        <div class="selection">
+                                           <h3>Selection</h3>
+                                           <span class="selected-label">nothing selected</span>
+                                        </div>
+                                      </section>
+                                      <section class="score">
+                                         <h2>Score</h2>
+                                        <span class="wins">0</span> wins, <span class="ties">0</span> ties, <span class="losses">0</span> losses out of <span class="out-of">0</span>
+                                      </section>
+                                      `;
 
                                       const shadowRoot = this.attachShadow({mode:'open'});
-                                      shadowRoot.appendChild(this.p);
+                                      shadowRoot.appendChild(root);
 
+                                      let player1 = getElement(root, 'player-1');
+                                      let name = getElement(player1, 'name');
+                                      let options = getElement(player1, 'options');
+                                      let selection = getElement(player1, 'selection');
+                                      let choice1 = getElement(selection, 'selected-label');
+
+                                      let player2 = getElement(root, 'player-2');
+                                      let selection2 = getElement(player2, 'selection');
+                                      let choice2 = getElement(selection2, 'selected-label');
+
+                                      let score = getElement(root, 'score');
+                                      let wins = getElement(score, 'wins');
+                                      let ties = getElement(score, 'ties');
+                                      let losses = getElement(score, 'losses');
+                                      let outOf = getElement(score, 'out-of');
+
+                                      let rock = getElement(options, 'rock');
+                                      rock.addEventListener('click', function assignRockChoice() {
+                                          game.player1.choice = that._rock;
+                                          executeComputerChoice();
+                                          scoreGame();
+                                          updateScreen();
+                                      });
+                                      let paper = getElement(options, 'paper');
+                                      paper.addEventListener('click', function assignPaperChoice() {
+                                          game.player1.choice = that._paper;
+                                          executeComputerChoice();
+                                          scoreGame();
+                                          updateScreen();
+                                      });
+                                      let scissor = getElement(options, 'scissor');
+                                      scissor.addEventListener('click', function assignScissorChoice() {
+                                          game.player1.choice = that._scissor;
+                                          executeComputerChoice();
+                                          scoreGame();
+                                          updateScreen();
+                                      });
+
+                                      updateScreen();
+
+                                      function executeComputerChoice() {
+                                          let choice = Math.floor(Math.random() * 3) + 1;
+                                          console.log(choice);
+                                          switch (choice) {
+                                              case 1:
+                                                  game.player2.choice = that._rock;
+                                                  break;
+                                              case 2:
+                                                  game.player2.choice = that._paper;
+                                                  break;
+                                              default:
+                                                  game.player2.choice = that._scissor;
+                                                  break;
+
+                                          }
+                                          console.log(game);
+                                      }
+
+                                      function scoreGame() {
+                                          game.score.outOf += 1;
+                                          let choice1 = game.player1.choice;
+                                          let choice2 = game.player2.choice;
+                                          if (choice1 === choice2) {
+                                              game.score.ties += 1;
+                                          } else {
+                                              if (choice1 === that._rock && choice2 === that._paper) {
+                                                  game.score.losses += 1;
+                                              }
+
+                                              if (choice1 === that._rock && choice2 === that._scissor) {
+                                                  game.score.wins += 1;
+                                              }
+
+                                              if (choice1 === that._paper && choice2 === that._rock) {
+                                                  game.score.wins += 1;
+                                              }
+
+                                              if (choice1 === that._paper && choice2 === that._scissor) {
+                                                  game.score.losses += 1;
+                                              }
+
+                                              if (choice1 === that._scissor && choice2 === that._rock) {
+                                                  game.score.losses += 1;
+                                              }
+
+                                              if (choice1 === that._scissor && choice2 === that._paper) {
+                                                  game.score.wins += 1;
+                                              }
+                                          }
+
+                                      }
+
+                                      function updateScreen() {
+                                          name.innerHTML = game.player1.name;
+                                          wins.innerHTML = game.score.wins;
+                                          losses.innerHTML = game.score.losses;
+                                          ties.innerHTML = game.score.ties;
+                                          outOf.innerHTML = game.score.outOf;
+                                          choice1.innerHTML = game.player1.choice;
+                                          choice2.innerHTML = game.player2.choice;
+                                      }
                                   }
                               });
     </script>
 </head>
 <body>
     <h1>The simplest web component</h1>
-    <wc-simple label="foo"></wc-simple>
+    <rps-simple player-1="Flo"></rps-simple>
 </body>
 </html>
