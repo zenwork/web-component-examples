@@ -13,6 +13,12 @@ attribute|`player2`|computer|valid:human,computer
 slot|`winning-message`|You Win|message displayed when player 1 wins
 slot|`losing-message`|You Lost|message displayed when player 1 loses
 
+### Minimal Mark-up
+```
+<rock-paper-scissors></rock-paper-scissors>
+``` 
+
+### Full Mark-up
 ```
 <rock-paper-scissors player1="human" player2="computer" best-of="5">
     <winning-message>You Won Biggly!</winning-message>
