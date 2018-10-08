@@ -30,11 +30,10 @@
                                   }
 
                                   attributeChangedCallback(name, oldValue, newValue) {
-                                      console.log('handled');
+                                      console.log('handling attribute change');
                                       if (oldValue !== newValue) {
                                           switch (name) {
                                               case 'player-1':
-                                                  console.log('changed');
                                                   this.game.player1.name = newValue;
                                                   this.root
                                                       .getElementsByClassName('player-1')[0]
@@ -88,7 +87,7 @@
                                       </section>
                                       `;
 
-                                      const shadowRoot = this.attachShadow({mode:'open'});
+                                      const shadowRoot = this.attachShadow({mode:'closed'});
                                       shadowRoot.appendChild(root);
 
                                       let player1 = getElement(root, 'player-1');
@@ -107,33 +106,28 @@
                                       let losses = getElement(score, 'losses');
                                       let outOf = getElement(score, 'out-of');
 
+                                      function factory(choice) {
+                                          return function assignChoice() {
+                                              game.player1.choice = choice;
+                                              executeComputerChoice();
+                                              scoreGame();
+                                              updateScreen();
+                                          };
+                                      }
+
                                       let rock = getElement(options, 'rock');
-                                      rock.addEventListener('click', function assignRockChoice() {
-                                          game.player1.choice = that._rock;
-                                          executeComputerChoice();
-                                          scoreGame();
-                                          updateScreen();
-                                      });
+                                      rock.addEventListener('click', factory(that._rock));
+
                                       let paper = getElement(options, 'paper');
-                                      paper.addEventListener('click', function assignPaperChoice() {
-                                          game.player1.choice = that._paper;
-                                          executeComputerChoice();
-                                          scoreGame();
-                                          updateScreen();
-                                      });
+                                      paper.addEventListener('click', factory(that._paper));
+
                                       let scissor = getElement(options, 'scissor');
-                                      scissor.addEventListener('click', function assignScissorChoice() {
-                                          game.player1.choice = that._scissor;
-                                          executeComputerChoice();
-                                          scoreGame();
-                                          updateScreen();
-                                      });
+                                      scissor.addEventListener('click', factory(that._scissor));
 
                                       updateScreen();
 
                                       function executeComputerChoice() {
                                           let choice = Math.floor(Math.random() * 3) + 1;
-                                          console.log(choice);
                                           switch (choice) {
                                               case 1:
                                                   game.player2.choice = that._rock;
@@ -146,7 +140,6 @@
                                                   break;
 
                                           }
-                                          console.log(game);
                                       }
 
                                       function scoreGame() {
