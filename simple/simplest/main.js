@@ -37,45 +37,6 @@
 
                           });
 
-    function updateName(newValue, game, root) {
-        game.player1.name = newValue;
-        root.getElementsByClassName('player-1')[0]
-            .getElementsByClassName('name')[0]
-            .innerHTML = newValue;
-    }
-
-    function wireUp(root, game) {
-        let player1 = getElement(root, 'player-1');
-        let name = getElement(player1, 'name');
-        let options = getElement(player1, 'options');
-        let selection = getElement(player1, 'selection');
-        let choice1 = getElement(selection, 'selected-label');
-
-        let player2 = getElement(root, 'player-2');
-        let selection2 = getElement(player2, 'selection');
-        let choice2 = getElement(selection2, 'selected-label');
-
-        let score = getElement(root, 'score');
-        let wins = getElement(score, 'wins');
-        let ties = getElement(score, 'ties');
-        let losses = getElement(score, 'losses');
-        let outOf = getElement(score, 'out-of');
-
-        addListeners(game, options, updateScreen);
-
-        updateScreen();
-
-        function updateScreen() {
-            name.innerHTML = game.player1.name;
-            wins.innerHTML = game.score.wins;
-            losses.innerHTML = game.score.losses;
-            ties.innerHTML = game.score.ties;
-            outOf.innerHTML = game.score.outOf;
-            choice1.innerHTML = game.player1.choice;
-            choice2.innerHTML = game.player2.choice;
-        }
-    }
-
     function createGame() {
         return {
             player1:{name:'you', choice:'none'},
@@ -121,8 +82,48 @@
         return root;
     }
 
-    let getElement = function (root, classNames) {
+    function updateName(newValue, game, root) {
+        game.player1.name = newValue;
+        root.getElementsByClassName('player-1')[0]
+            .getElementsByClassName('name')[0]
+            .innerHTML = newValue;
+    }
+
+    function wireUp(root, game) {
+        let player1 = getElement(root, 'player-1');
+        let name = getElement(player1, 'name');
+        let options = getElement(player1, 'options');
+        let selection = getElement(player1, 'selection');
+        let choice1 = getElement(selection, 'selected-label');
+
+        let player2 = getElement(root, 'player-2');
+        let selection2 = getElement(player2, 'selection');
+        let choice2 = getElement(selection2, 'selected-label');
+
+        let score = getElement(root, 'score');
+        let wins = getElement(score, 'wins');
+        let ties = getElement(score, 'ties');
+        let losses = getElement(score, 'losses');
+        let outOf = getElement(score, 'out-of');
+
+        addListeners(game, options, updateScreen);
+
+        updateScreen();
+
+        function updateScreen() {
+            name.innerHTML = game.player1.name;
+            wins.innerHTML = game.score.wins;
+            losses.innerHTML = game.score.losses;
+            ties.innerHTML = game.score.ties;
+            outOf.innerHTML = game.score.outOf;
+            choice1.innerHTML = game.player1.choice;
+            choice2.innerHTML = game.player2.choice;
+        }
+    }
+
+    function getElement(root, classNames) {
         return root.getElementsByClassName(classNames)[0];
+
     };
 
     function addListeners(game, options, updateScreen) {
