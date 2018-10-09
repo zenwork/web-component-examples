@@ -4,10 +4,31 @@
     <meta charset="UTF-8">
     <title>Plain JS RPS</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.0.2/webcomponents-bundle.js"></script>
-    <script src="main.js"></script>
+
 </head>
 <body>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            font-family: monospace;
+            /*text-align leaks into the web-component*/
+            text-align: center;
+        }
+
+        /*not applied because shadow dom is protecting the component*/
+        .score {
+            background: red;
+            text-align: left;
+        }
+    </style>
+
     <h1>Plain JavaScript implementation of Rock, Paper, Scissors</h1>
     <rps-simple player-1="Flo"></rps-simple>
+    <visual-console></visual-console>
+
+    <script src="../wc-tester/wc-debugger.js"></script>
+    <script src="main.js"></script>
+
 </body>
 </html>
