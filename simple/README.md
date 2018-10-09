@@ -28,6 +28,11 @@ This implementation uses nothing other than vanilla js.
 
 This implementation uses X-Tag 1.5 (2.0 is in beta and not full featured and seemingly stalled)
 
+### WC Tester
+Web component implementation that provides a visual logging facility. It provides an event-based interface to log information. It is there as an example of inter-component communication but also as a nice way to see debug info on the screen.
+
+It also includes a a function called `addIntruder`. It can be used to attmept to inject css into a shadow dom'ed compoent.
+
 ##### sources:
 1. Web Component Specifications. https://developer.mozilla.org/en-US/docs/Web/Web_Components
 1. Mozila Developer Network reference examples. https://github.com/mdn/web-components-examples

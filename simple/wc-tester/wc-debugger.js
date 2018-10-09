@@ -1,13 +1,24 @@
+/**
+ * Logging interface that provides convenience for interacting with the web component
+ * @type {{log : viz.showDebugMessage}}
+ */
 const viz = {
 
     log:function showDebugMessage(ctx, prefix, msg) {
-        let log = `[${ctx}][${prefix.toUpperCase()}] -${msg}`;
-        // console.log('triggering');
-        let event = new CustomEvent('wc-debug-event', {detail:log});
-        window.dispatchEvent(event);
+        let element = document.getElementsByTagName('visual-console')[0];
+        let logMsg = `[${ctx}][${prefix.toUpperCase()}] - ${msg}`;
+        if (element) {
+            let event = new CustomEvent('wc-debug-event', {detail:logMsg});
+            element.dispatchEvent(event);
+        } else {
+            console.log(`visual logger not connected yet: [${logMsg}]`);
+        }
     }
 };
 
+/**
+ * register the component
+ */
 customElements.define('visual-console',
                       class extends HTMLElement {
                           constructor() {
@@ -24,18 +35,31 @@ customElements.define('visual-console',
                               const shadowRoot = this.attachShadow({mode:'open'});
                               shadowRoot.appendChild(this.div);
 
-                              const d = this.div;
-                              window.addEventListener('wc-debug-event',
-                                                      function (event) {
-                                                          // console.log('event handled');
-                                                          let p = document.createElement('li');
-                                                          p.innerHTML = event.detail;
-                                                          d.getElementsByClassName('debug')[0].appendChild(p);
-                                                      });
                               viz.log('visual-console', 'lifecycle', 'constructed');
 
+
+
                           }
-                          
+
+                          connectedCallback() {
+                              const d = this.div;
+
+                              document
+                                  .getElementsByTagName('visual-console')[0]
+                                  .addEventListener('wc-debug-event',
+                                                    function (event) {
+                                                        // console.log('event
+                                                        // handled');
+                                                        let p = document.createElement(
+                                                            'li');
+                                                        p.innerHTML
+                                                            = event.detail;
+                                                        d.getElementsByClassName(
+                                                            'debug')[0].appendChild(
+                                                            p);
+                                                    });
+                              viz.log('visual-console', 'lifecycle', 'connected');
+                          }
 
                       });
 
