@@ -102,21 +102,111 @@
                 </div>
               </section>
 </div>`,
+        content:` <div class="game">
+                <style>
+                div,section {
+                    font-family: sans-serif;
+                }
+                section {
+                    border: gray solid 1px;
+                    border-radius: 15px;
+                }
+                .game {
+                    border: black solid 2px;
+                    margin: 2px;
+                    border-radius: 15px;
+                    position: relative;
+                    padding: 10px;
+                  }
+                .player-1, .player-2 {
+                    float:left;
+                    width:48%;
+                    box-sizing: border-box;
+                    padding: 5px;
+                    margin: 5px;
+                    height: 250px;
+                }
+                .score {
+                    clear: both;
+                    width: 96%;                                            
+                    background: lightgray;
+                    padding: 5px;
+                    margin: 5px; 
+                    text-align: center;
+                   
+                }
+                .wins {
+                   color: green;
+                }
+                .losses {
+                    color: red;
+                }
+                .results {
+                    font-size: larger;
+                    font-weight: bold;
+                    
+                }
+              </style>
+                            <div>
+                  <section class="player-1">
+                    <h2 class="name">name</h2>
+                    <div class="options">
+                        <h3>Options</h3>
+                        <button class="rock">Rock</button>
+                        <button class="paper">Paper</button>
+                        <button class="scissor">Scissor</button>
+                    </div>
+                    <div class="selection">
+                        <h3>Selection</h3>
+                       <span class="selected-label">nothing selected</span>
+                    </div>
+                  </section>
+                  <section class="player-2">
+                    <h2 class="name">no name</h2>
+                    <div class="options">
+                        <h3>Options</h3>
+                        <span>Computer will reveal choice after you select</span>
+                    </div>
+                    <div class="selection">
+                       <h3>Selection</h3>
+                       <span class="selected-label">nothing selected</span>
+                    </div>
+                  </section>
+              </div>
+                            <section class="score">
+                 <h2>Score</h2>
+                 <div class="results">
+                    <span class="wins">0</span> wins, <span class="ties">0</span> ties, <span class="losses">0</span> losses out of <span class="out-of">0</span>
+                </div>
+              </section>
+</div>`,
         lifecycle:{
             created:function () {
                 console.log('rps-xtag', 'lifecycle', 'created');
-                this.shadowRoot.game = game.createGame();
+                if (this.shadowRoot) {
+                    this.shadowRoot.game = game.createGame();
+                } else {
+                    this.game = game.createGame();
+                }
             },
             inserted:function () {
                 console.log('rps-xtag', 'lifecycle', 'inserted');
-                game.wireUp(this.shadowRoot.children[0], this.shadowRoot.game);
+                if (this.shadowRoot) {
+                    game.wireUp(this.shadowRoot.children[0], this.shadowRoot.game);
+                } else {
+                    game.wireUp(this.children[0], this.game);
+                }
             }
         },
         accessors:{
             'player-1':{
                 set:function (value) {
                     console.log('rps-xtag', 'lifecycle', 'set player 1');
-                    game.updateName(value, this.shadowRoot.game, this.shadowRoot.children[0]);
+                    if (this.shadowRoot) {
+                        game.updateName(value, this.shadowRoot.game, this.shadowRoot.children[0]);
+                    } else {
+                        game.updateName(value, this.game, this.children[0]);
+                    }
                 }
             }
         }

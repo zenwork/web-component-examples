@@ -20,6 +20,8 @@ attribute|`player-1`|optional|name
 
 all implementations use the polymer `webcomponent.js` polifill.
 
+The simplest way to run these examples is to install `http-server` with npm. then run `http-serve simple`. 
+
 ### Simple
 
 This implementation uses nothing other than vanilla js.
