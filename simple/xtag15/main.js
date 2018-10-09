@@ -200,6 +200,7 @@
         },
         accessors:{
             'player-1':{
+                attributes:{},
                 set:function (value) {
                     console.log('rps-xtag', 'lifecycle', 'set player 1');
                     if (this.shadowRoot) {

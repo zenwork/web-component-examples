@@ -30,6 +30,10 @@ This implementation uses nothing other than vanilla js.
 
 This implementation uses X-Tag 1.5 (2.0 is in beta and not full featured and seemingly stalled)
 
+* not working well. 
+* Shadow implementation only works in chrome
+* player 1 name not getting updated.
+
 ### WC Tester
 Web component implementation that provides a visual logging facility. It provides an event-based interface to log information. It is there as an example of inter-component communication but also as a nice way to see debug info on the screen.
 
