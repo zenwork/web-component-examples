@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Plain JS RPS</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.0.2/webcomponents-bundle.js"></script>
-    <script src="https://rawgit.com/x-tag/core/master/dist/x-tag-raw.js"></script>
+    <title>X-Tag 1.x</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/x-tag/1.5.11/x-tag-core-with-shadowdom.min.js"></script>
     <script src="../wc-tester/wc-debugger.js"></script>
 </head>
 <body>
@@ -23,7 +22,7 @@
             text-align: left;
         }
     </style>
-    <h1>Plain JavaScript implementation of Rock, Paper, Scissors</h1>
+    <h1>X-Tag 1.5 implementation of Rock, Paper, Scissors</h1>
     <rps-xtag player-1="Flo"></rps-xtag>
     <visual-console></visual-console>
 
@@ -35,7 +34,7 @@
         viz.log('index.html',
                 'doc',
                 'respected shadow dom contract: atempt at styling \'.score\' from outside web component failed');
-    </script>
 
+    </script>
 </body>
 </html>

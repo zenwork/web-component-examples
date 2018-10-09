@@ -17,7 +17,7 @@ attribute|`player-1`|n/a|name
 
 ### Full Mark-up
 ```
-<rock-paper-scissors player-1="Johnny English"  best-of="5">
+<rock-paper-scissors player-1="Johnny English" >
 </rock-paper-scissors>
 ``` 
 

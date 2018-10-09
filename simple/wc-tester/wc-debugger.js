@@ -2,7 +2,7 @@ const viz = {
 
     log:function showDebugMessage(ctx, prefix, msg) {
         let log = `[${ctx}][${prefix.toUpperCase()}] -${msg}`;
-        console.log('triggering');
+        // console.log('triggering');
         let event = new CustomEvent('wc-debug-event', {detail:log});
         window.dispatchEvent(event);
     }
@@ -27,18 +27,15 @@ customElements.define('visual-console',
                               const d = this.div;
                               window.addEventListener('wc-debug-event',
                                                       function (event) {
-                                                          console.log('event handled');
+                                                          // console.log('event handled');
                                                           let p = document.createElement('li');
                                                           p.innerHTML = event.detail;
                                                           d.getElementsByClassName('debug')[0].appendChild(p);
                                                       });
-                              viz.log('visual-console', 'lifecycle', 'constructing');
+                              viz.log('visual-console', 'lifecycle', 'constructed');
 
                           }
-
-                          connectedCallback() {
-                              viz.log('visual-console', 'lifecycle', 'connected');
-                          }
+                          
 
                       });
 
