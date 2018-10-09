@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plain JS RPS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.0.2/webcomponents-bundle.js"></script>
+    <script src="https://rawgit.com/x-tag/core/master/dist/x-tag-raw.js"></script>
+    <script src="../wc-tester/wc-debugger.js"></script>
+</head>
+<body>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            font-family: monospace;
+            /*text-align leaks into the web-component*/
+            text-align: center;
+        }
+
+        /*not applied because shadow dom is protecting the component*/
+        .score {
+            background: red;
+            text-align: left;
+        }
+    </style>
+    <h1>Plain JavaScript implementation of Rock, Paper, Scissors</h1>
+    <rps-xtag player-1="Flo"></rps-xtag>
+    <visual-console></visual-console>
+
+    <script src="main.js"></script>
+    <script>
+        viz.log('index.html',
+                'doc',
+                'broken shadow dom contract: Player 1 & 2 text is centered. \'text-align:center\' style is leaking into rps-simple for unkown reason');
+        viz.log('index.html',
+                'doc',
+                'respected shadow dom contract: atempt at styling \'.score\' from outside web component failed');
+    </script>
+
+</body>
+</html>
