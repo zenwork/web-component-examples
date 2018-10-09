@@ -18,7 +18,7 @@ customElements.define('visual-console',
                               this.div.innerHTML = `
                                         <div>
                                         <link rel="stylesheet" href="../wc-tester/debug.css"/>
-                                        <h3>debug</h3>
+                                        <h3>Visual Console</h3>
                                         <ol class="debug"></ol>
                                         </div>`;
                               const shadowRoot = this.attachShadow({mode:'open'});
@@ -28,7 +28,6 @@ customElements.define('visual-console',
                               window.addEventListener('wc-debug-event',
                                                       function (event) {
                                                           console.log('event handled');
-                                                          // that.debug(event.detail   );
                                                           let p = document.createElement('li');
                                                           p.innerHTML = event.detail;
                                                           d.getElementsByClassName('debug')[0].appendChild(p);
@@ -41,11 +40,6 @@ customElements.define('visual-console',
                               viz.log('visual-console', 'lifecycle', 'connected');
                           }
 
-                          debug(msg) {
-                              let p = document.createElement('li');
-                              p.innerHTML = msg;
-                              this.div.getElementsByClassName('debug')[0].appendChild(p);
-                          }
                       });
 
 

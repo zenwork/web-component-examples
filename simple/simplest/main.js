@@ -1,7 +1,8 @@
 (function () {
     const console = {
         log:function (ctx, prefix, msg) {
-            if (viz) {
+
+            if (typeof(viz) !== 'undefined') {
                 viz.log(ctx, prefix, msg);
             } else {
                 let log = `[${ctx}][${prefix.toUpperCase()}] - ${msg}`;
@@ -183,7 +184,7 @@
     function getElement(root, classNames) {
         return root.getElementsByClassName(classNames)[0];
 
-    };
+    }
 
     function addListeners(game, options, updateScreen) {
         let rock = getElement(options, 'rock');
