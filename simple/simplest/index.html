@@ -2,12 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Simple Web Component</title>
+    <title>Plain JS RPS</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.0.2/webcomponents-bundle.js"></script>
     <script>
-        let getElement = function (root, classNames) {
-            return root.getElementsByClassName(classNames)[0];
-        };
         customElements.define('rps-simple',
                               class extends HTMLElement {
 
@@ -21,12 +18,9 @@
                                       this.game = {
                                           player1:{name:'you', choice:'none'},
                                           player2:{name:'computer', choice:'none'},
-                                          score:{wins:0, losses:0, ties:0, outOf:0}
+                                          score:{wins:0, losses:0, ties:0, outOf:0},
+                                          choices:{rock:'rock', paper:'paper', scissor:'scissor'}
                                       };
-
-                                      this._rock = 'rock';
-                                      this._paper = 'paper';
-                                      this._scissor = 'scissor';
                                   }
 
                                   attributeChangedCallback(name, oldValue, newValue) {
@@ -50,7 +44,6 @@
                                       super();
                                       console.log('constructing');
                                       this.init();
-                                      const that = this;
                                       const game = this.game;
 
                                       this.root = document.createElement('root');
@@ -106,75 +99,9 @@
                                       let losses = getElement(score, 'losses');
                                       let outOf = getElement(score, 'out-of');
 
-                                      function factory(choice) {
-                                          return function assignChoice() {
-                                              game.player1.choice = choice;
-                                              executeComputerChoice();
-                                              scoreGame();
-                                              updateScreen();
-                                          };
-                                      }
-
-                                      let rock = getElement(options, 'rock');
-                                      rock.addEventListener('click', factory(that._rock));
-
-                                      let paper = getElement(options, 'paper');
-                                      paper.addEventListener('click', factory(that._paper));
-
-                                      let scissor = getElement(options, 'scissor');
-                                      scissor.addEventListener('click', factory(that._scissor));
+                                      addListeners(game, options, updateScreen);
 
                                       updateScreen();
-
-                                      function executeComputerChoice() {
-                                          let choice = Math.floor(Math.random() * 3) + 1;
-                                          switch (choice) {
-                                              case 1:
-                                                  game.player2.choice = that._rock;
-                                                  break;
-                                              case 2:
-                                                  game.player2.choice = that._paper;
-                                                  break;
-                                              default:
-                                                  game.player2.choice = that._scissor;
-                                                  break;
-
-                                          }
-                                      }
-
-                                      function scoreGame() {
-                                          game.score.outOf += 1;
-                                          let choice1 = game.player1.choice;
-                                          let choice2 = game.player2.choice;
-                                          if (choice1 === choice2) {
-                                              game.score.ties += 1;
-                                          } else {
-                                              if (choice1 === that._rock && choice2 === that._paper) {
-                                                  game.score.losses += 1;
-                                              }
-
-                                              if (choice1 === that._rock && choice2 === that._scissor) {
-                                                  game.score.wins += 1;
-                                              }
-
-                                              if (choice1 === that._paper && choice2 === that._rock) {
-                                                  game.score.wins += 1;
-                                              }
-
-                                              if (choice1 === that._paper && choice2 === that._scissor) {
-                                                  game.score.losses += 1;
-                                              }
-
-                                              if (choice1 === that._scissor && choice2 === that._rock) {
-                                                  game.score.losses += 1;
-                                              }
-
-                                              if (choice1 === that._scissor && choice2 === that._paper) {
-                                                  game.score.wins += 1;
-                                              }
-                                          }
-
-                                      }
 
                                       function updateScreen() {
                                           name.innerHTML = game.player1.name;
@@ -187,10 +114,89 @@
                                       }
                                   }
                               });
+
+        let getElement = function (root, classNames) {
+            return root.getElementsByClassName(classNames)[0];
+        };
+
+        function addListeners(game, options, updateScreen) {
+            let rock = getElement(options, 'rock');
+            rock.addEventListener('click', factory(game.choices.rock));
+
+            let paper = getElement(options, 'paper');
+            paper.addEventListener('click', factory(game.choices.paper));
+
+            let scissor = getElement(options, 'scissor');
+            scissor.addEventListener('click', factory(game.choices.scissor));
+
+            function factory(choice) {
+                return function assignChoice() {
+                    game.player1.choice = choice;
+                    executeComputerChoice(game);
+                    scoreGame(game);
+                    updateScreen();
+                };
+            }
+        };
+
+        function scoreGame(game) {
+            game.score.outOf += 1;
+
+            let choice1 = game.player1.choice;
+            let choice2 = game.player2.choice;
+
+            if (choice1 === choice2) {
+                game.score.ties += 1;
+            } else {
+                let rock = game.choices.rock;
+                let paper = game.choices.paper;
+                let scissor = game.choices.scissor;
+                if (choice1 === rock && choice2 === paper) {
+                    game.score.losses += 1;
+                }
+
+                if (choice1 === rock && choice2 === scissor) {
+                    game.score.wins += 1;
+                }
+
+                if (choice1 === paper && choice2 === rock) {
+                    game.score.wins += 1;
+                }
+
+                if (choice1 === paper && choice2 === scissor) {
+                    game.score.losses += 1;
+                }
+
+                if (choice1 === scissor && choice2 === rock) {
+                    game.score.losses += 1;
+                }
+
+                if (choice1 === scissor && choice2 === paper) {
+                    game.score.wins += 1;
+                }
+            }
+
+        }
+
+        function executeComputerChoice(game) {
+            let choice = Math.floor(Math.random() * 3) + 1;
+            switch (choice) {
+                case 1:
+                    game.player2.choice = game.choices.rock;
+                    break;
+                case 2:
+                    game.player2.choice = game.choices.paper;
+                    break;
+                default:
+                    game.player2.choice = game.choices.scissor;
+                    break;
+
+            }
+        }
     </script>
 </head>
 <body>
-    <h1>The simplest web component</h1>
+    <h1>Plain JavaScript implementation of Rock, Paper, Scissors</h1>
     <rps-simple player-1="Flo"></rps-simple>
 </body>
 </html>
