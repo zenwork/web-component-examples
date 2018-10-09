@@ -5,34 +5,31 @@
     <title>Plain JS RPS</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.0.2/webcomponents-bundle.js"></script>
     <script>
+
+
         customElements.define('rps-simple',
                               class extends HTMLElement {
 
+                                  constructor() {
+                                      super();
+                                      console.log('constructing');
+
+                                      this.game = createGame();
+                                      this.root = createRootElement(this.game);
+
+                                      const shadowRoot = this.attachShadow({mode:'closed'});
+                                      shadowRoot.appendChild(this.root);
+
+                                  }
+
                                   static get observedAttributes() { return ['player-1']; }
-
-                                  connectedCallback() {
-                                      console.log('connected');
-                                  }
-
-                                  init() {
-                                      this.game = {
-                                          player1:{name:'you', choice:'none'},
-                                          player2:{name:'computer', choice:'none'},
-                                          score:{wins:0, losses:0, ties:0, outOf:0},
-                                          choices:{rock:'rock', paper:'paper', scissor:'scissor'}
-                                      };
-                                  }
 
                                   attributeChangedCallback(name, oldValue, newValue) {
                                       console.log('handling attribute change');
                                       if (oldValue !== newValue) {
                                           switch (name) {
                                               case 'player-1':
-                                                  this.game.player1.name = newValue;
-                                                  this.root
-                                                      .getElementsByClassName('player-1')[0]
-                                                      .getElementsByClassName('name')[0]
-                                                      .innerHTML = newValue;
+                                                  updateName(newValue, this.game, this.root);
                                                   break;
                                               default:
 
@@ -40,16 +37,65 @@
                                       }
                                   }
 
-                                  constructor() {
-                                      super();
-                                      console.log('constructing');
-                                      this.init();
-                                      const game = this.game;
+                                  connectedCallback() {
+                                      console.log('wiring element');
+                                      wireUp(this.root, this.game);
+                                  }
 
-                                      this.root = document.createElement('root');
-                                      let root = this.root;
+                              });
 
-                                      root.innerHTML = `
+        function updateName(newValue, game, root) {
+            game.player1.name = newValue;
+            root.getElementsByClassName('player-1')[0]
+                .getElementsByClassName('name')[0]
+                .innerHTML = newValue;
+        }
+
+        function wireUp(root, game) {
+            let player1 = getElement(root, 'player-1');
+            let name = getElement(player1, 'name');
+            let options = getElement(player1, 'options');
+            let selection = getElement(player1, 'selection');
+            let choice1 = getElement(selection, 'selected-label');
+
+            let player2 = getElement(root, 'player-2');
+            let selection2 = getElement(player2, 'selection');
+            let choice2 = getElement(selection2, 'selected-label');
+
+            let score = getElement(root, 'score');
+            let wins = getElement(score, 'wins');
+            let ties = getElement(score, 'ties');
+            let losses = getElement(score, 'losses');
+            let outOf = getElement(score, 'out-of');
+
+            addListeners(game, options, updateScreen);
+
+            updateScreen();
+
+            function updateScreen() {
+                name.innerHTML = game.player1.name;
+                wins.innerHTML = game.score.wins;
+                losses.innerHTML = game.score.losses;
+                ties.innerHTML = game.score.ties;
+                outOf.innerHTML = game.score.outOf;
+                choice1.innerHTML = game.player1.choice;
+                choice2.innerHTML = game.player2.choice;
+            }
+        }
+
+        function createGame() {
+            return {
+                player1:{name:'you', choice:'none'},
+                player2:{name:'computer', choice:'none'},
+                score:{wins:0, losses:0, ties:0, outOf:0},
+                choices:{rock:'rock', paper:'paper', scissor:'scissor'}
+            };
+        }
+
+        function createRootElement(game) {
+            let root = document.createElement('div');
+
+            root.innerHTML = `
                                       <section class="player-1">
                                         <h2 class="name">name</h2>
                                         <div class="options">
@@ -64,7 +110,7 @@
                                         </div>
                                       </section>
                                       <section class="player-2">
-                                        <h2 class="name">${this.game.player2.name}</h2>
+                                        <h2 class="name">${game.player2.name}</h2>
                                         <div class="options">
                                             <h3>Options</h3>
                                             <span>Computer will reveal choice after you select</span>
@@ -79,41 +125,8 @@
                                         <span class="wins">0</span> wins, <span class="ties">0</span> ties, <span class="losses">0</span> losses out of <span class="out-of">0</span>
                                       </section>
                                       `;
-
-                                      const shadowRoot = this.attachShadow({mode:'closed'});
-                                      shadowRoot.appendChild(root);
-
-                                      let player1 = getElement(root, 'player-1');
-                                      let name = getElement(player1, 'name');
-                                      let options = getElement(player1, 'options');
-                                      let selection = getElement(player1, 'selection');
-                                      let choice1 = getElement(selection, 'selected-label');
-
-                                      let player2 = getElement(root, 'player-2');
-                                      let selection2 = getElement(player2, 'selection');
-                                      let choice2 = getElement(selection2, 'selected-label');
-
-                                      let score = getElement(root, 'score');
-                                      let wins = getElement(score, 'wins');
-                                      let ties = getElement(score, 'ties');
-                                      let losses = getElement(score, 'losses');
-                                      let outOf = getElement(score, 'out-of');
-
-                                      addListeners(game, options, updateScreen);
-
-                                      updateScreen();
-
-                                      function updateScreen() {
-                                          name.innerHTML = game.player1.name;
-                                          wins.innerHTML = game.score.wins;
-                                          losses.innerHTML = game.score.losses;
-                                          ties.innerHTML = game.score.ties;
-                                          outOf.innerHTML = game.score.outOf;
-                                          choice1.innerHTML = game.player1.choice;
-                                          choice2.innerHTML = game.player2.choice;
-                                      }
-                                  }
-                              });
+            return root;
+        }
 
         let getElement = function (root, classNames) {
             return root.getElementsByClassName(classNames)[0];
