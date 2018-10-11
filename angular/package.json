@@ -1,5 +1,5 @@
 {
-    "name": "md-story",
+    "name": "rps-angular",
     "version": "0.0.0",
     "scripts": {
         "ng": "ng",
@@ -11,7 +11,7 @@
         "build:aot-element": "ng build --aot --output-hashing none && node build/element-build.js",
         "build:prod-element": "ng build --prod --output-hashing none && node build/element-build-prod.js",
         "build:element": "ng build --output-hashing none && node build/element-build-dev.js",
-        "run:ng-el:2":"http-serve dist/md-story-dev"
+        "run:ng-el:2": "http-serve dist/rps-angular-dev"
     },
     "private": true,
     "dependencies": {

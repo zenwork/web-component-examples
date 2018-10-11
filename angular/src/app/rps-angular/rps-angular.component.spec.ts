@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MdStoryComponent } from './md-story.component';
+import { RpsAngularComponent } from './rps-angular.component';
 
-describe('MdStoryComponent', () => {
-  let component: MdStoryComponent;
-  let fixture: ComponentFixture<MdStoryComponent>;
+describe('RpsAngularComponent', () => {
+  let component: RpsAngularComponent;
+  let fixture: ComponentFixture<RpsAngularComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MdStoryComponent ]
+      declarations: [ RpsAngularComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MdStoryComponent);
+    fixture = TestBed.createComponent(RpsAngularComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

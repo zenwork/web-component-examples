@@ -1,13 +1,14 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
-
-import {AppComponent} from './app.component';
-import { MdStoryComponent } from './md-story/md-story.component';
+import {Injector, NgModule} from '@angular/core';
+import {createCustomElement} from '@angular/elements';
+import {RpsAngularComponent} from './rps-angular/rps-angular.component';
 
 @NgModule({
-    declarations: [AppComponent, MdStoryComponent],
+    declarations: [RpsAngularComponent],
     imports: [BrowserModule],
-    bootstrap: [AppComponent],
-    entryComponents: [MdStoryComponent]
+    bootstrap: [RpsAngularComponent],
+    entryComponents:[RpsAngularComponent]
 })
-export class AppModule {}
+export class AppModule {
+    
+}

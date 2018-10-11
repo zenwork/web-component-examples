@@ -2,14 +2,14 @@ const fs = require('fs-extra');
 const concat = require('concat');
 (async function build() {
     const files = [
-        './dist/md-story/runtime.js',
-        './dist/md-story/polyfills.js',
-        // './dist/md-story/scripts.js',
-        './dist/md-story/main.js'
+        './dist/rps-angular/runtime.js',
+        './dist/rps-angular/polyfills.js',
+        // './dist/rps-angular/scripts.js',
+        './dist/rps-angular/main.js'
     ];
-    await fs.move('./dist/md-story','./dist/md-story-prod');
-    await concat(files, './dist/md-story-prod/md-story.js');
-    await fs.copyFile('./src/webcomponent.html', './dist/md-story-prod/index.html');
-    // await fs.copyFile('./dist/md-story/styles.css', './dist/elements/styles.css')
-    // await fs.copy('./dist/md-story/assets/', 'elements/assets/' )
+    await fs.move('./dist/rps-angular','./dist/rps-angular-prod');
+    await concat(files, './dist/rps-angular-prod/rps-angular.js');
+    await fs.copyFile('./src/webcomponent.html', './dist/rps-angular-prod/index.html');
+    // await fs.copyFile('./dist/rps-angular/styles.css', './dist/elements/styles.css')
+    // await fs.copy('./dist/rps-angular/assets/', 'elements/assets/' )
 })();
