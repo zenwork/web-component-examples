@@ -1,7 +1,7 @@
 {
     "name": "rps-lit",
     "description": "LitElement implementation Rock, Paper, Scissors",
-    "main": "rps-lit.js",
+    "main": "index.js",
     "dependencies": {
         "@polymer/lit-element": "^0.6.2",
         "@polymer/polymer": "^3.0.0"

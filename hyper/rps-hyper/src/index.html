@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hyperHTML RPS</title>
+</head>
+<body>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            font-family: monospace;
+            /*text-align leaks into the web-component*/
+            text-align: center;
+        }
+
+        /*not applied because shadow dom is protecting the component*/
+        .score {
+            background: red;
+            text-align: left;
+        }
+    </style>
+    <h1>hyperHTML implementation of Rock, Paper, Scissors</h1>
+    <rps-hyper name="Flo"></rps-hyper>
+</body>
+</html>
