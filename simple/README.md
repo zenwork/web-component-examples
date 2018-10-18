@@ -1,6 +1,10 @@
 # Plain JavaScript Examples
 This project provides varied implementations of the same component in different 'flavors' using simple JavaScript and in some cases a simple library that provides simple syntactic sugar for implementing the same component.
 
+None of these implementations need any compiling. A simple tool like `http-server` serving the root of this section is enough to serve everythign in on go.
+
+The idea was to implement the same little game in all implementations.
+
 ## The Spec
 
 The component implementations all implement the game rock-paper-scissors. 
@@ -13,7 +17,7 @@ attribute|`player-1`|optional|name
 
 ### Mark-up
 ```
-<rps-tag-1="Johnny English" ></rock-paper-scissors>
+<rps-[impl] player-1="Johnny English" ></rps-[impl]>
 ``` 
 
 ## Implementations
@@ -33,6 +37,14 @@ This implementation uses X-Tag 1.5 (2.0 is in beta and not full featured and see
 * not working well. 
 * Shadow implementation only works in chrome
 * player 1 name not getting updated.
+
+### Slim
+
+implementation made with SlimJS
+
+### Shadow-DOM
+
+shadow dom experiments 
 
 ### WC Tester
 Web component implementation that provides a visual logging facility. It provides an event-based interface to log information. It is there as an example of inter-component communication but also as a nice way to see debug info on the screen.
